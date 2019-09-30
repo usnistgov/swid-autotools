@@ -1,0 +1,47 @@
+# SWID for GNU Autotools
+
+This project provides support for construction of SWID tags using the GNU Autoconf and Automake build chain.
+
+
+## Usage
+
+The general upgrade this project provides is the generation of SWID Corpus tags as part of the autotools build chain, augmenting `dist` targets.  New targets are available, mirroring the [the types of distributions](https://www.gnu.org/software/automake/manual/html_node/The-Types-of-Distributions.html):
+* `dist-bzip2-swidtag`
+* `dist-gzip-swidtag`
+* `dist-lzip-swidtag`
+* `dist-xz-swidtag`
+* `dist-zip-swidtag`
+
+Running one of these targets will produce a file named after the distribution file.  E.g. running `make dist-gzip-swidtag` after `./configure` will produce `${my_project}.${my_version}.tar.gz.swidtag`.
+
+This project was designed to be track-able as a Git submodule, so source files could be soft-linked into a project's source tree.  Unit tests demonstrate this build-augmenting strategy.
+
+
+### Using this repository
+
+The default invocation of `make` in this project provides a help menu, showing targets and their basic functionality:
+
+```
+Run 'make check' to run unit tests.
+Run 'make check-swidval' to run swidval unit tests.  (Requires Java.  May require non-automated download.)
+Run 'make check-incorporation' to run incorporation unit tests.  (Requires networking.)
+Run 'make explain' to see differences neded to start SWID tag implementation.
+Run 'make docs' to confirm generated documentation files are up to date.  ('make clean' or 'make clean-docs' will remove generated files.)
+```
+
+`make explain` in this directory will show the necessary differences to a project's `/configure.ac` and `/Makefile.am`.  The differences are part of the unit test suite, which compare a sample application under `tests/sample_nop` against `tests/sample_nop_corpus_tag/base`.  The minimal steps necessary are documented under that "base" directory's [README](tests/sample_nop_corpus_tag/base/README).
+
+Features provided by the autoconf macros are documented within the m4 definitions file, [swid.m4](m4/swid.m4).  Tests of the various features are documented and demonstrated under the [Corpus tag test directory](tests/sample_nop_corpus_tag).  The READMEs of that directory's subdirectories document the relative differences needed to use the features.
+
+An incorporation tutorial is available in [`TUTORIAL.md`](TUTORIAL.md).
+
+
+### Testing
+
+Unit tests have been written to guarantee the features implemented for `SWID_SUBST` function for project builds through a call to [`make distcheck`](https://www.gnu.org/software/automake/manual/html_node/Checking-the-Distribution.html).  The tests are implemented as additions to a sample C application whose entire source tree is under `tests/sample_nop`.
+
+To run unit tests (building tarballs for the sample application), run `make check`.  The `tests/deps/` directory includes scripts that install minimal package dependencies (`make` and a C compiler) for some manually tested operating systems.  Tests are also run in [Travis CI](https://travis-ci.com/usnistgov/swid-autotools), though not in all of the environments denoted in the `deps/` directory.
+
+The unit tests generate SWID tags as part of their output.  To validate the SWID tags' conformance, [SWIDVal](https://csrc.nist.gov/Projects/Software-Identification-SWID/resources) can be run as an optional component of the test suite.  (SWIDVal requires Java.)  To run these yourself, run `make check-swidval`.  Success or failure will be reported by the Make call.
+
+NOTE: There is currently an issue in the SWIDVal unit tests with retrieving SWIDVal itself.  There is a manual workaround documented in the [Corpus tag test directory](tests/sample_nop_corpus_tag#running-swidval).  Until the issue is permanently remediated, unit tests for SWIDVal will operate in the [`run_swidval_in_ci`](https://github.com/usnistgov/swid-autotools/tree/run_swidval_in_ci) branch, but may intermittently fail due to networking issues.

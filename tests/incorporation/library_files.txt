@@ -1,0 +1,3 @@
+include/swid.am
+lib/swidtag.py
+m4/swid.m4

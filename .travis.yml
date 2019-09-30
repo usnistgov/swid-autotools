@@ -1,0 +1,47 @@
+
+# This software was developed at the National Institute of Standards
+# and Technology by employees of the Federal Government in the course
+# of their official duties. Pursuant to title 17 Section 105 of the
+# United States Code this software is not subject to copyright
+# protection and is in the public domain. NIST assumes no
+# responsibility whatsoever for its use by other parties, and makes
+# no guarantees, expressed or implied, about its quality,
+# reliability, or any other characteristic.
+#
+# We would appreciate acknowledgement if the software is used.
+
+# The purpose of declaring this a java project to Travis is to make use of Travis tools available to Java environments, to assist with running swidval for swidtag validation.
+# Otherwise, the project is much more based on Autotools on C toy projects.
+# JDK 8 is used because of an outstanding issue on JDK 10.0.1+ with swidval.
+language: java
+
+os: linux
+
+dist: trusty
+
+jdk: openjdk8
+
+addons:
+  apt:
+    packages:
+      # Needed for retrieval of swidval from csrc.nist.gov.
+      #   General solution form via:
+      #   https://unix.stackexchange.com/a/445609
+      - ca-certificates
+      # Needed for `xmllint`.
+      - libxml2-utils
+      - lzip
+
+matrix:
+  include:
+    - python: "2.7"
+    - python: "3.6"
+    - python: "3.7"
+
+# check-swidval and check-incorporation depend on the top-level 'check' target succeeding first.
+# TODO check-swidval requires remediation for an intermittent SWIDVal retrieval issue.
+script:
+  - make check
+#  - make check-swidval
+  - make check-incorporation
+  - make clean-docs && make --keep-going check-docs

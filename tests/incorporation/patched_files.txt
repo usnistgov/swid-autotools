@@ -1,0 +1,4 @@
+Makefile.am
+configure.ac
+include/Makefile.am
+lib/Makefile.am

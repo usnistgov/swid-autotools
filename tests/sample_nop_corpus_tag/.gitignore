@@ -1,0 +1,4 @@
+*.jar
+*.swidtag
+/check-swidval-*/
+/swidval-*-swidval.zip

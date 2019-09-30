@@ -1,0 +1,220 @@
+# This software was developed at the National Institute of Standards
+# and Technology by employees of the Federal Government in the course
+# of their official duties. Pursuant to title 17 Section 105 of the
+# United States Code this software is not subject to copyright
+# protection and is in the public domain. NIST assumes no
+# responsibility whatsoever for its use by other parties, and makes
+# no guarantees, expressed or implied, about its quality,
+# reliability, or any other characteristic.
+#
+# We would appreciate acknowledgement if the software is used.
+
+# This file should be included with an Automake include directive.
+#   https://www.gnu.org/software/automake/manual/html_node/include.html
+#
+# Some unexpected behavior arises if the include directive points above
+# $(top_srcdir), where new copies of the directory structure are made.
+# This behavior has not been observed when (soft-)linking the file into
+# $(top_srcdir)/include/swid.am
+#
+# Note that other files from the SWID Autotools repository have their
+# expected locations spelled out with the Make dependencies in this
+# file.  Soft-linking them provides the expected behaviors.
+#
+# Much of the code in this file happens to be redundant, as it was
+# not desired to implement another level of code-templating to cover
+# all of the distribution target types.
+
+dist-hook: dist-hook-swid
+
+dist-hook-swid: \
+  $(top_srcdir)/lib/swidtag.py
+	mkdir -p $(distdir)/swidtag
+	rm -f $(distdir)/swidtag/*
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
+	; \
+	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
+	    --distribution-path $(distdir) \
+	    --lang="@SWID_LANG@" \
+	    --name="@SWID_TAGNAME@" \
+	    --payload \
+	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
+	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagversionfile \
+	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
+	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
+	    --version="@PACKAGE_VERSION@" \
+	    --version-scheme="@SWID_VERSION_SCHEME@" \
+	    $(distdir)/swidtag/_@SWID_TAGNAME@.swidtag
+if SWID_USE_XMLLINT
+	mv \
+	  $(distdir)/swidtag/_@SWID_TAGNAME@.swidtag \
+	  $(distdir)/swidtag/__@SWID_TAGNAME@.swidtag
+	$(SWID_XMLLINT) \
+	  --format \
+	  $(distdir)/swidtag/__@SWID_TAGNAME@.swidtag \
+	  > $(distdir)/swidtag/_@SWID_TAGNAME@.swidtag
+	rm \
+	  $(distdir)/swidtag/__@SWID_TAGNAME@.swidtag
+endif
+	mv $(distdir)/swidtag/_@SWID_TAGNAME@.swidtag $(distdir)/swidtag/@SWID_TAGNAME@.swidtag
+
+dist-bzip2-swidtag: \
+  $(distdir).tar.bz2 \
+  $(top_srcdir)/lib/swidtag.py
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
+	; \
+	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
+	    --corpus \
+	    --distribution-path $(distdir).tar.bz2 \
+	    --lang="@SWID_LANG@" \
+	    --name="@SWID_TAGNAME@" \
+	    --payload \
+	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
+	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagversionfile \
+	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
+	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
+	    --version="@PACKAGE_VERSION@" \
+	    --version-scheme="@SWID_VERSION_SCHEME@" \
+	    $(distdir).tar.bz2._swidtag
+if SWID_USE_XMLLINT
+	mv \
+	  $(distdir).tar.bz2._swidtag \
+	  $(distdir).tar.bz2.__swidtag
+	$(SWID_XMLLINT) \
+	  --format \
+	  $(distdir).tar.bz2.__swidtag \
+	  > $(distdir).tar.bz2._swidtag
+	rm \
+	  $(distdir).tar.bz2.__swidtag
+endif
+	mv $(distdir).tar.bz2._swidtag $(distdir).tar.bz2.swidtag
+
+dist-gzip-swidtag: \
+  $(distdir).tar.gz \
+  $(top_srcdir)/lib/swidtag.py
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
+	; \
+	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
+	    --corpus \
+	    --distribution-path $(distdir).tar.gz \
+	    --lang="@SWID_LANG@" \
+	    --name="@SWID_TAGNAME@" \
+	    --payload \
+	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
+	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagversionfile \
+	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
+	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
+	    --version="@PACKAGE_VERSION@" \
+	    --version-scheme="@SWID_VERSION_SCHEME@" \
+	    $(distdir).tar.gz._swidtag
+if SWID_USE_XMLLINT
+	mv \
+	  $(distdir).tar.gz._swidtag \
+	  $(distdir).tar.gz.__swidtag
+	$(SWID_XMLLINT) \
+	  --format \
+	  $(distdir).tar.gz.__swidtag \
+	  > $(distdir).tar.gz._swidtag
+	rm \
+	  $(distdir).tar.gz.__swidtag
+endif
+	mv $(distdir).tar.gz._swidtag $(distdir).tar.gz.swidtag
+
+dist-lzip-swidtag: \
+  $(distdir).tar.lz \
+  $(top_srcdir)/lib/swidtag.py
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
+	; \
+	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
+	    --corpus \
+	    --distribution-path $(distdir).tar.lz \
+	    --lang="@SWID_LANG@" \
+	    --name="@SWID_TAGNAME@" \
+	    --payload \
+	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
+	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagversionfile \
+	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
+	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
+	    --version="@PACKAGE_VERSION@" \
+	    --version-scheme="@SWID_VERSION_SCHEME@" \
+	    $(distdir).tar.lz._swidtag
+if SWID_USE_XMLLINT
+	mv \
+	  $(distdir).tar.lz._swidtag \
+	  $(distdir).tar.lz.__swidtag
+	$(SWID_XMLLINT) \
+	  --format \
+	  $(distdir).tar.lz.__swidtag \
+	  > $(distdir).tar.lz._swidtag
+	rm \
+	  $(distdir).tar.lz.__swidtag
+endif
+	mv $(distdir).tar.lz._swidtag $(distdir).tar.lz.swidtag
+
+dist-xz-swidtag: \
+  $(distdir).tar.xz \
+  $(top_srcdir)/lib/swidtag.py
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
+	; \
+	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
+	    --corpus \
+	    --distribution-path $(distdir).tar.xz \
+	    --lang="@SWID_LANG@" \
+	    --name="@SWID_TAGNAME@" \
+	    --payload \
+	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
+	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagversionfile \
+	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
+	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
+	    --version="@PACKAGE_VERSION@" \
+	    --version-scheme="@SWID_VERSION_SCHEME@" \
+	    $(distdir).tar.xz._swidtag
+if SWID_USE_XMLLINT
+	mv \
+	  $(distdir).tar.xz._swidtag \
+	  $(distdir).tar.xz.__swidtag
+	$(SWID_XMLLINT) \
+	  --format \
+	  $(distdir).tar.xz.__swidtag \
+	  > $(distdir).tar.xz._swidtag
+	rm \
+	  $(distdir).tar.xz.__swidtag
+endif
+	mv $(distdir).tar.xz._swidtag $(distdir).tar.xz.swidtag
+
+dist-zip-swidtag: \
+  $(distdir).zip \
+  $(top_srcdir)/lib/swidtag.py
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
+	; \
+	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
+	    --corpus \
+	    --distribution-path $(distdir).zip \
+	    --lang="@SWID_LANG@" \
+	    --name="@SWID_TAGNAME@" \
+	    --payload \
+	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
+	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagversionfile \
+	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
+	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
+	    --version="@PACKAGE_VERSION@" \
+	    --version-scheme="@SWID_VERSION_SCHEME@" \
+	    $(distdir).zip._swidtag
+if SWID_USE_XMLLINT
+	mv \
+	  $(distdir).zip._swidtag \
+	  $(distdir).zip.__swidtag
+	$(SWID_XMLLINT) \
+	  --format \
+	  $(distdir).zip.__swidtag \
+	  > $(distdir).zip._swidtag
+	rm \
+	  $(distdir).zip.__swidtag
+endif
+	mv $(distdir).zip._swidtag $(distdir).zip.swidtag

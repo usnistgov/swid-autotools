@@ -1,0 +1,13 @@
+.gitignore
+AUTHORS
+COPYING
+ChangeLog
+Makefile.am
+NEWS
+README
+README.md
+autogen.sh
+configure.ac
+src/.gitignore
+src/Makefile.am
+src/nop.c
