@@ -21,7 +21,7 @@ Some XML ElementTree logistics in this script used this code as reference:
     https://github.com/strongswan/swidGenerator/blob/master/swid_generator/generators/swid_generator.py
 """
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"
 
 import os
 import sys
@@ -177,7 +177,7 @@ def main():
 
     if args.aggregator_name or args.aggregator_regid:
         if args.aggregator_name and args.aggregator_regid:
-            entity_role_sets[(args.softwarecreator_name, args.softwarecreator_regid)].add("aggregator")
+            entity_role_sets[(args.aggregator_name, args.aggregator_regid)].add("aggregator")
         else:
             raise ValueError("If supplying an aggregator, the name and regid must both be supplied.")
 
