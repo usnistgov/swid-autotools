@@ -42,6 +42,6 @@ matrix:
 # TODO check-swidval requires remediation for an intermittent SWIDVal retrieval issue.
 script:
   - make check
-#  - make check-swidval
+  - make check-swidval
   - make check-incorporation
   - make clean-docs && make --keep-going check-docs
