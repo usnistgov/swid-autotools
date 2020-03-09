@@ -25,7 +25,7 @@ The default invocation of `make` in this project provides a help menu, showing t
 Run 'make check' to run unit tests.
 Run 'make check-swidval' to run swidval unit tests.  (Requires Java.  May require non-automated download.)
 Run 'make check-incorporation' to run incorporation unit tests.  (Requires networking.)
-Run 'make explain' to see differences neded to start SWID tag implementation.
+Run 'make explain' to see differences needed to start SWID tag implementation.
 Run 'make docs' to confirm generated documentation files are up to date.  ('make clean' or 'make clean-docs' will remove generated files.)
 ```
 

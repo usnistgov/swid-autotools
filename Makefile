@@ -19,7 +19,7 @@ all:
 	@echo "Run 'make check' to run unit tests."
 	@echo "Run 'make check-swidval' to run swidval unit tests.  (Requires Java.  May require non-automated download.)"
 	@echo "Run 'make check-incorporation' to run incorporation unit tests.  (Requires networking.)"
-	@echo "Run 'make explain' to see differences neded to start SWID tag implementation."
+	@echo "Run 'make explain' to see differences needed to start SWID tag implementation."
 	@echo "Run 'make docs' to confirm generated documentation files are up to date.  ('make clean' or 'make clean-docs' will remove generated files.)"
 
 .PHONY: \
