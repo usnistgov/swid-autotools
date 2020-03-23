@@ -13,9 +13,11 @@
 
 SHELL := /bin/bash
 
+top_srcdir := $(shell cd ../.. ; pwd)
+
 PYTHON ?= python
 
-top_srcdir := $(shell cd ../.. ; pwd)
+SWIDVAL_ZIP ?= $(top_srcdir)/tests/share/swidval-0.5.0-swidval.zip
 
 AUTOTOOL_SUPPORT_FILES := \
   $(top_srcdir)/include/swid.am \
@@ -120,8 +122,8 @@ check-swidval: \
 
 check-swidval-corpus-%/swidval-passes.log: \
   %.swidtag \
+  $(SWIDVAL_ZIP) \
   check-swidval.mk \
-  swidval-0.5.0-swidval.zip \
   swidval-base-requirements-satisfied.py
 	rm -rf $$(dirname $@)
 	mkdir -p $$(dirname $@)
@@ -134,8 +136,8 @@ check-swidval-corpus-%/swidval-passes.log: \
 
 check-swidval-primary-%/swidval-passes.log: \
   %.swidtag \
+  $(SWIDVAL_ZIP) \
   check-swidval.mk \
-  swidval-0.5.0-swidval.zip \
   swidval-base-requirements-satisfied.py
 	rm -rf $$(dirname $@)
 	mkdir -p $$(dirname $@)
@@ -193,14 +195,6 @@ lang.swidtag: \
 	  lang/sample_nop-0.0.1.tar.gz \
 	  sample_nop-0.0.1/swidtag/sample_nop.swidtag \
 	  > _$@
-	mv _$@ $@
-
-swidval-0.5.0-swidval.zip: \
-  swidval-0.5.0-swidval.zip.sha512
-	wget -O _$@ https://csrc.nist.gov/CSRC/media/Projects/Software-Identification-SWID/tools/$@
-	test "x$$(openssl dgst -sha512 _$@ | awk '{print($$NF)}')" == "x$$(head -n1 $< | awk '{print($$NF)}')" \
-	  || (echo "ERROR:Makefile:$@ SHA-512 failed to verify." >&2 ; exit 1)
-	touch _$@
 	mv _$@ $@
 
 tagname.swidtag: \

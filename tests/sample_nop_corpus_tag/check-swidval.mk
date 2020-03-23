@@ -13,11 +13,13 @@
 
 SHELL := /bin/bash
 
+top_srcdir := $(shell cd ../../.. ; pwd)
+
 PYTHON ?= python
 
-SWIDVAL_USECASE ?= corpus
+SWIDVAL_ZIP ?= $(top_srcdir)/tests/share/swidval-0.5.0-swidval.zip
 
-SWIDVAL_ZIP ?= ../swidval-0.5.0-swidval.zip
+SWIDVAL_USECASE ?= corpus
 
 SUBJECT_SWIDTAG ?=
 ifeq ($(SUBJECT_SWIDTAG),)
@@ -27,9 +29,12 @@ endif
 all: \
   swidval-passes.log
 
+# This recipe is intentionally stored in a repeatedly-run Makefile because of a dependency of swidval 0.5.0 has on a directory stored in the zip.
 swidval-0.5.0.jar: \
   $(SWIDVAL_ZIP)
 	unzip $<
+	test -r $@
+	touch $@
 
 swidval-passes.log: \
   ../swidval-base-requirements-satisfied.py \

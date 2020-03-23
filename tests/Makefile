@@ -13,9 +13,11 @@
 
 SHELL := /bin/bash
 
-PYTHON ?= python
-
 top_srcdir := $(shell cd .. ; pwd)
+
+SWIDVAL_ZIP ?= $(top_srcdir)/tests/share/swidval-0.5.0-swidval.zip
+
+PYTHON ?= python
 
 AUTOTOOL_SUPPORT_FILES := \
   $(top_srcdir)/include/swid.am \
@@ -28,6 +30,10 @@ all:
   check-incorporation \
   check-swidval
 
+$(SWIDVAL_ZIP):
+	$(MAKE) -C share
+	test -r $@
+
 check: \
   sample_nop_corpus_tag.check.done.log
 
@@ -36,6 +42,7 @@ check-incorporation: \
 	$(MAKE) -C incorporation PYTHON=$(PYTHON)
 
 check-swidval: \
+  $(SWIDVAL_ZIP) \
   sample_nop_corpus_tag.check.done.log
 	$(MAKE) -C sample_nop_corpus_tag PYTHON=$(PYTHON) check-swidval
 
