@@ -35,6 +35,22 @@ def main():
         _logger.info("root_elem.attrib[\"xml:lang\"]=%r" % root_elem.attrib["{http://www.w3.org/XML/1998/namespace}lang"])
         raise
 
+    if args.check_tagid_file_corpus:
+        try:
+            assert args.check_tagid_file_corpus == root_elem.attrib["tagId"]
+        except:
+            _logger.info("args.check_tagid_file_corpus=%r" % args.check_tagid_file_corpus)
+            _logger.info("root_elem.attrib[\"tagId\"]=%r" % root_elem.attrib["tagId"])
+            raise
+
+    if args.check_tagid_file_primary:
+        try:
+            assert args.check_tagid_file_primary == root_elem.attrib["tagId"]
+        except:
+            _logger.info("args.check_tagid_file_primary=%r" % args.check_tagid_file_primary)
+            _logger.info("root_elem.attrib[\"tagId\"]=%r" % root_elem.attrib["tagId"])
+            raise
+
     try:
         assert args.check_tagname == root_elem.attrib["name"]
     except:
@@ -61,6 +77,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--check-lang", default="en-us")
     parser.add_argument("--check-tagname", default="sample_nop")
+    parser.add_argument("--check-tagid_file-corpus") #(Default is random, hence not checked.)
+    parser.add_argument("--check-tagid_file-primary") #(Default is random, hence not checked.)
     parser.add_argument("--check-tagversion_file", default="1")
     parser.add_argument("--check-versionscheme", default="unknown")
     parser.add_argument("in_swidtag")

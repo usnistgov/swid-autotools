@@ -31,8 +31,8 @@ dist-hook-swid: \
   $(top_srcdir)/lib/swidtag.py
 	mkdir -p $(distdir)/swidtag
 	rm -f $(distdir)/swidtag/*
-	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
-	; \
+	if [ -r $(top_srcdir)/var/swid/primary-tagId.txt ]; then flag_tagidfile="--tag-id-file=$(top_srcdir)/var/swid/primary-tagId.txt" ; else flag_tagidfile="" ; fi ; \
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi ; \
 	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
 	    --distribution-path $(distdir) \
 	    --lang="@SWID_LANG@" \
@@ -40,6 +40,7 @@ dist-hook-swid: \
 	    --payload \
 	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
 	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagidfile \
 	    $$flag_tagversionfile \
 	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
 	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
@@ -62,8 +63,8 @@ endif
 dist-bzip2-swidtag: \
   $(distdir).tar.bz2 \
   $(top_srcdir)/lib/swidtag.py
-	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
-	; \
+	if [ -r $(top_srcdir)/var/swid/corpus-bzip2-tagId.txt ]; then flag_tagidfile="--tag-id-file=$(top_srcdir)/var/swid/corpus-bzip2-tagId.txt" ; else flag_tagidfile="" ; fi ; \
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi ; \
 	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
 	    --corpus \
 	    --distribution-path $(distdir).tar.bz2 \
@@ -72,6 +73,7 @@ dist-bzip2-swidtag: \
 	    --payload \
 	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
 	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagidfile \
 	    $$flag_tagversionfile \
 	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
 	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
@@ -94,8 +96,8 @@ endif
 dist-gzip-swidtag: \
   $(distdir).tar.gz \
   $(top_srcdir)/lib/swidtag.py
-	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
-	; \
+	if [ -r $(top_srcdir)/var/swid/corpus-tagId.txt ]; then flag_tagidfile="--tag-id-file=$(top_srcdir)/var/swid/corpus-tagId.txt" ; else flag_tagidfile="" ; fi ; \
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi ; \
 	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
 	    --corpus \
 	    --distribution-path $(distdir).tar.gz \
@@ -104,6 +106,7 @@ dist-gzip-swidtag: \
 	    --payload \
 	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
 	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagidfile \
 	    $$flag_tagversionfile \
 	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
 	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
@@ -126,8 +129,8 @@ endif
 dist-lzip-swidtag: \
   $(distdir).tar.lz \
   $(top_srcdir)/lib/swidtag.py
-	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
-	; \
+	if [ -r $(top_srcdir)/var/swid/corpus-lzip-tagId.txt ]; then flag_tagidfile="--tag-id-file=$(top_srcdir)/var/swid/corpus-lzip-tagId.txt" ; else flag_tagidfile="" ; fi ; \
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi ; \
 	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
 	    --corpus \
 	    --distribution-path $(distdir).tar.lz \
@@ -136,6 +139,7 @@ dist-lzip-swidtag: \
 	    --payload \
 	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
 	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagidfile \
 	    $$flag_tagversionfile \
 	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
 	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
@@ -158,8 +162,8 @@ endif
 dist-xz-swidtag: \
   $(distdir).tar.xz \
   $(top_srcdir)/lib/swidtag.py
-	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
-	; \
+	if [ -r $(top_srcdir)/var/swid/corpus-xz-tagId.txt ]; then flag_tagidfile="--tag-id-file=$(top_srcdir)/var/swid/corpus-xz-tagId.txt" ; else flag_tagidfile="" ; fi ; \
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi ; \
 	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
 	    --corpus \
 	    --distribution-path $(distdir).tar.xz \
@@ -168,6 +172,7 @@ dist-xz-swidtag: \
 	    --payload \
 	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
 	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagidfile \
 	    $$flag_tagversionfile \
 	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
 	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \
@@ -190,8 +195,8 @@ endif
 dist-zip-swidtag: \
   $(distdir).zip \
   $(top_srcdir)/lib/swidtag.py
-	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi \
-	; \
+	if [ -r $(top_srcdir)/var/swid/corpus-zip-tagId.txt ]; then flag_tagidfile="--tag-id-file=$(top_srcdir)/var/swid/corpus-zip-tagId.txt" ; else flag_tagidfile="" ; fi ; \
+	if [ -r $(top_srcdir)/var/swid/corpus-tagVersion.txt ]; then flag_tagversionfile="--tag-version-file=$(top_srcdir)/var/swid/corpus-tagVersion.txt" ; else flag_tagversionfile="" ; fi ; \
 	  $(PYTHON) $(top_srcdir)/lib/swidtag.py \
 	    --corpus \
 	    --distribution-path $(distdir).zip \
@@ -200,6 +205,7 @@ dist-zip-swidtag: \
 	    --payload \
 	    --softwarecreator-name="@SWID_SOFTWARECREATOR_NAME@" \
 	    --softwarecreator-regid="@SWID_SOFTWARECREATOR_REGID@" \
+	    $$flag_tagidfile \
 	    $$flag_tagversionfile \
 	    --tagcreator-name="@SWID_TAGCREATOR_NAME@" \
 	    --tagcreator-regid="@SWID_TAGCREATOR_REGID@" \

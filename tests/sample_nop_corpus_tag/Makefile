@@ -36,6 +36,7 @@ TEST_DIRNAMES := \
   configure_disable_swid_xmllint \
   lang \
   tagname \
+  tagid_file \
   tagversion_file \
   versionscheme
 
@@ -94,6 +95,28 @@ check-swidtag-configure_disable_swid_xmllint: \
 	  $$(xmllint --format $< | wc -c | tr -d ' ') \
 	  -gt \
 	  $$(cat $< | wc -c | tr -d ' ')
+
+check-swidtag-tagid_file: \
+  tagid_file.swidtag \
+  check-core.py
+	$(PYTHON) check-core.py \
+	  --check-tagid_file-corpus $$(head -n1 tagid_file/var/swid/corpus-bzip2-tagId.txt) \
+	  tagid_file/sample_nop-0.0.1.tar.bz2.swidtag
+	$(PYTHON) check-core.py \
+	  --check-tagid_file-corpus $$(head -n1 tagid_file/var/swid/corpus-lzip-tagId.txt) \
+	  tagid_file/sample_nop-0.0.1.tar.lz.swidtag
+	$(PYTHON) check-core.py \
+	  --check-tagid_file-corpus $$(head -n1 tagid_file/var/swid/corpus-tagId.txt) \
+	  tagid_file/sample_nop-0.0.1.tar.gz.swidtag
+	$(PYTHON) check-core.py \
+	  --check-tagid_file-corpus $$(head -n1 tagid_file/var/swid/corpus-xz-tagId.txt) \
+	  tagid_file/sample_nop-0.0.1.tar.xz.swidtag
+	$(PYTHON) check-core.py \
+	  --check-tagid_file-corpus $$(head -n1 tagid_file/var/swid/corpus-zip-tagId.txt) \
+	  tagid_file/sample_nop-0.0.1.zip.swidtag
+	$(PYTHON) check-core.py \
+	  --check-tagid_file-primary $$(head -n1 tagid_file/var/swid/primary-tagId.txt) \
+	  $<
 
 check-swidtag-tagname: \
   tagname.swidtag \
@@ -193,6 +216,75 @@ lang.swidtag: \
 	tar \
 	  -xOzf \
 	  lang/sample_nop-0.0.1.tar.gz \
+	  sample_nop-0.0.1/swidtag/sample_nop.swidtag \
+	  > _$@
+	mv _$@ $@
+
+tagid_file/var/swid/corpus-bzip2-tagId.txt: \
+  sample_tag_id.py
+	$(PYTHON) sample_tag_id.py \
+	  --corpus \
+	  --dist-bzip2 \
+	  > $@_
+	mv $@_ $@
+
+tagid_file/var/swid/corpus-lzip-tagId.txt: \
+  sample_tag_id.py
+	$(PYTHON) sample_tag_id.py \
+	  --corpus \
+	  --dist-lzip \
+	  > $@_
+	mv $@_ $@
+
+# This target uses a "default" name in keeping with the convention of "make dist" implying .tar.gz.
+tagid_file/var/swid/corpus-tagId.txt: \
+  sample_tag_id.py
+	$(PYTHON) sample_tag_id.py \
+	  --corpus \
+	  > $@_
+	mv $@_ $@
+
+tagid_file/var/swid/corpus-xz-tagId.txt: \
+  sample_tag_id.py
+	$(PYTHON) sample_tag_id.py \
+	  --corpus \
+	  --dist-xz \
+	  > $@_
+	mv $@_ $@
+
+tagid_file/var/swid/corpus-zip-tagId.txt: \
+  sample_tag_id.py
+	$(PYTHON) sample_tag_id.py \
+	  --corpus \
+	  --dist-zip \
+	  > $@_
+	mv $@_ $@
+
+tagid_file/var/swid/primary-tagId.txt: \
+  sample_tag_id.py
+	$(PYTHON) sample_tag_id.py \
+	  --primary \
+	  > $@_
+	mv $@_ $@
+
+tagid_file.swidtag: \
+  base.swidtag \
+  tagid_file/var/swid/corpus-bzip2-tagId.txt \
+  tagid_file/var/swid/corpus-lzip-tagId.txt \
+  tagid_file/var/swid/corpus-tagId.txt \
+  tagid_file/var/swid/corpus-xz-tagId.txt \
+  tagid_file/var/swid/corpus-zip-tagId.txt \
+  tagid_file/var/swid/primary-tagId.txt
+	$(MAKE) clean-swidtag-tagid_file
+	cd tagid_file ; ./autogen.sh
+	cd tagid_file ; ./configure
+	$(MAKE) -C tagid_file PYTHON=$(PYTHON) check
+	$(MAKE) -C tagid_file PYTHON=$(PYTHON) installcheck
+	$(MAKE) -C tagid_file PYTHON=$(PYTHON) distcheck
+	$(MAKE) -C tagid_file PYTHON=$(PYTHON) $(DIST_SWIDTAG_TARGETS)
+	tar \
+	  -xOzf \
+	  tagid_file/sample_nop-0.0.1.tar.gz \
 	  sample_nop-0.0.1/swidtag/sample_nop.swidtag \
 	  > _$@
 	mv _$@ $@

@@ -21,7 +21,7 @@ Some XML ElementTree logistics in this script used this code as reference:
     https://github.com/strongswan/swidGenerator/blob/master/swid_generator/generators/swid_generator.py
 """
 
-__version__ = "0.7.1"
+__version__ = "0.8.0"
 
 import os
 import sys
@@ -146,7 +146,15 @@ def main():
         raise ValueError("--name parameter cannot be blank.")
     swidtag.set("name", args.name)
 
-    tag_id = str(uuid.uuid4())
+    tag_id = None
+    if not args.tag_id is None:
+        tag_id = args.tag_id
+    elif not args.tag_id_file is None:
+        with open(args.tag_id_file, "r") as tag_id_fh:
+            tag_id = tag_id_fh.readline().strip()
+    if tag_id is None:
+        # Assign default.
+        tag_id = str(uuid.uuid4())
     swidtag.set("tagId", tag_id)
 
     tag_version = None
@@ -273,6 +281,11 @@ if __name__ == "__main__":
     tree_group = parser.add_mutually_exclusive_group(required=True)
     tree_group.add_argument("--evidence", action="store_true", help="The element to use for an evidence tag.")
     tree_group.add_argument("--payload", action="store_true", help="The element to use for a corpus tag.")
+
+    # If no member of this group is specified, a random UUID will be put in the output XML.
+    tag_id_group = parser.add_mutually_exclusive_group()
+    tag_id_group.add_argument("--tag-id", help="A string to use to declare the tagId attribute.")
+    tag_id_group.add_argument("--tag-id-file", help="A file containing the tagId.")
 
     # If no member of this group is specified, a '1' will be put in the output XML.
     tag_version_group = parser.add_mutually_exclusive_group()

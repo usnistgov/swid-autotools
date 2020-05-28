@@ -8,6 +8,7 @@ This directory tests GNU Autotool macros that generate Corpus tags.  The [`base/
 * [`configure_disable_swid_xmllint`](configure_disable_swid_xmllint) - By default, `xmllint` is run to confirm well-formedness of the SWID tag, as well as pretty-print it.  This test shows `xmllint` can be disabled in the build process, potentially removing a build dependency.
 * [`lang`](lang) - Changing the top-level language in the SWID tag.
 * [`tagname`](tagname) - Changing the basename of the SWID tag.
+* [`tagid_file`](tagid_file) - Changing the `tagId` of the SWID tag.
 * [`tagversion_file`](tagversion_file) - Changing the `tagVersion` of the SWID tag.
 * [`versionscheme`](versionscheme) - Changing the `versionScheme` of the SWID tag.
 
