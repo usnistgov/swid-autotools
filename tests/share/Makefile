@@ -11,6 +11,8 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
+SHELL := /bin/bash
+
 all: \
   swidval-0.5.0-swidval.zip
 
